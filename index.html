@@ -15,23 +15,17 @@ body{
     text-align:center;
     overflow-x:hidden;
 
-    /* ROCKET GRADIENT BACKGROUND */
-    background: linear-gradient(270deg,#000428,#004e92,#000428,#1a2980);
-    background-size:600% 600%;
-    animation:bgMove 15s ease infinite;
+    background: linear-gradient(135deg,#000428,#004e92,#000428);
 }
 
-@keyframes bgMove{
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-}
-
-/* FLOAT ANIMATION */
-@keyframes float{
-    0%{transform:translateY(0px)}
-    50%{transform:translateY(-6px)}
-    100%{transform:translateY(0px)}
+/* BACKGROUND ANIMATION */
+#bgCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
 }
 
 /* FUND */
@@ -42,54 +36,39 @@ body{
 }
 
 /* LOGO */
-.logo{
-    font-size:46px;
-    font-weight:bold;
-    letter-spacing:4px;
-    margin:10px 0 20px;
-    text-shadow:0 0 25px #00f0ff;
+.logo-box{
+    width:90%;
+    max-width:360px;
+    margin:15px auto;
+    padding:25px;
+    border-radius:20px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(15px);
 }
 
-/* GLASS BOX */
+.logo{
+    font-size:42px;
+    font-weight:bold;
+    text-shadow:0 0 20px #00f0ff;
+}
+
+/* INPUT */
 .box{
     width:90%;
     max-width:340px;
     margin:10px auto;
     padding:15px;
     border-radius:15px;
-
     background: rgba(255,255,255,0.08);
     backdrop-filter: blur(12px);
 }
 
-/* INPUT */
 input{
     width:100%;
     padding:12px;
     margin:8px 0;
     border:none;
     border-radius:8px;
-}
-
-/* BUTTON */
-.btn{
-    margin:15px auto;
-    padding:15px;
-    width:90%;
-    max-width:320px;
-    border-radius:15px;
-    cursor:pointer;
-
-    background: rgba(255,255,255,0.12);
-    backdrop-filter: blur(10px);
-
-    transition:0.3s;
-    animation:float 3s infinite;
-}
-
-.btn:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 20px #00f0ff;
 }
 
 /* SERVICES */
@@ -100,15 +79,24 @@ input{
     max-width:320px;
     border-radius:15px;
     cursor:pointer;
-
     background: rgba(255,255,255,0.1);
-
     transition:0.3s;
 }
 
 .service-box:hover{
     transform:scale(1.05);
     box-shadow:0 0 20px cyan;
+}
+
+/* BUTTON */
+.btn{
+    margin:15px auto;
+    padding:15px;
+    width:90%;
+    max-width:320px;
+    border-radius:15px;
+    cursor:pointer;
+    background: rgba(255,255,255,0.12);
 }
 
 /* RECEIPT */
@@ -130,17 +118,29 @@ input{
     border-radius:15px;
     width:90%;
     max-width:320px;
-
     backdrop-filter: blur(15px);
-
-    animation:pop 0.4s ease;
 }
 
-@keyframes pop{
-    from{transform:scale(0.6); opacity:0;}
-    to{transform:scale(1); opacity:1;}
+/* 🔥 FIXED LINK BOX */
+.link-box{
+    margin-top:15px;
+    padding:12px;
+    border-radius:12px;
+    background: rgba(0,0,0,0.25);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align:left;
 }
 
+/* link text auto break */
+.link-text{
+    margin-top:5px;
+    font-size:12px;
+    opacity:0.9;
+    word-break: break-all;
+}
+
+/* CLOSE */
 .close{
     margin-top:15px;
     padding:10px;
@@ -149,10 +149,18 @@ input{
     border-radius:10px;
     cursor:pointer;
 }
+
+/* POP */
+@keyframes pop{
+    from{transform:scale(0.6); opacity:0;}
+    to{transform:scale(1); opacity:1;}
+}
 </style>
 </head>
 
 <body>
+
+<canvas id="bgCanvas"></canvas>
 
 <script>
 let userFund = 292.22;
@@ -160,36 +168,24 @@ let userFund = 292.22;
 
 <div class="fund">Fund: ₱<span id="fund"></span></div>
 
-<div class="logo">BOSSMJ34</div>
+<div class="logo-box">
+    <div class="logo">BOSSMJ34</div>
+</div>
 
-<!-- LINK + QUANTITY (ALWAYS VISIBLE) -->
 <div class="box">
     <input type="text" id="link" placeholder="Facebook Link">
-    <input type="number" id="qty" placeholder="Quantity (e.g. 5000)" oninput="calcTotal()">
+    <input type="number" id="qty" placeholder="Quantity" oninput="calcTotal()">
 </div>
 
-<!-- SERVICES -->
-<div class="service-box" onclick="selectService('Page Followers',22)">
-    👍 Page Followers (₱22 / 1000)
-</div>
-
-<div class="service-box" onclick="selectService('Profile Followers',22)">
-    👤 Profile Followers (₱22 / 1000)
-</div>
-
-<div class="service-box" onclick="selectService('Views',7.50)">
-    👁️ Views (₱4.80 / 1000)
-</div>
-
-<div class="service-box" onclick="selectService('Reaction',12.78)">
-    ❤️ Reaction (₱12.78 / 1000)
-</div>
+<div class="service-box" onclick="selectService('Page Followers',22)">👍 Page Followers</div>
+<div class="service-box" onclick="selectService('Profile Followers',22)">👤 Profile Followers</div>
+<div class="service-box" onclick="selectService('Views',4.80)">👁️ Views</div>
+<div class="service-box" onclick="selectService('Reaction',12.78)">❤️ Reaction</div>
 
 <h3>Total: ₱<span id="total">0</span></h3>
 
 <div class="btn" onclick="submitOrder()">🚀 Submit Order</div>
 
-<!-- RECEIPT -->
 <div id="receiptOverlay">
     <div id="receiptBox"></div>
 </div>
@@ -217,15 +213,8 @@ function submitOrder(){
     let qty = document.getElementById("qty").value;
     let total = (qty / 1000) * selectedPrice;
 
-    if(!selectedService){
-        alert("Select a service!");
-        return;
-    }
-
-    if(total > userFund){
-        alert("Insufficient Fund!");
-        return;
-    }
+    if(!selectedService) return alert("Select service!");
+    if(total > userFund) return alert("Insufficient fund!");
 
     userFund -= total;
     document.getElementById("fund").innerText = userFund.toFixed(2);
@@ -237,9 +226,14 @@ function submitOrder(){
         <h2>🚀 RECEIPT</h2>
         Date: ${date}<br>
         Service: ${selectedService}<br>
-        Link: ${link}<br>
         Quantity: ${qty}<br>
         Total: ₱${total.toFixed(2)}
+
+        <div class="link-box">
+            🔗 Link:
+            <div class="link-text">${link}</div>
+        </div>
+
         <div class="close" onclick="closeReceipt()">Close</div>
     `;
 }
@@ -247,6 +241,62 @@ function submitOrder(){
 function closeReceipt(){
     document.getElementById("receiptOverlay").style.display = "none";
 }
+</script>
+
+<!-- ANIMATED LINES -->
+<script>
+const canvas = document.getElementById("bgCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for(let i=0;i<80;i++){
+    particles.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        vx:(Math.random()-0.5)*0.5,
+        vy:(Math.random()-0.5)*0.5
+    });
+}
+
+function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    for(let i=0;i<particles.length;i++){
+        let p = particles[i];
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if(p.x<0||p.x>canvas.width) p.vx*=-1;
+        if(p.y<0||p.y>canvas.height) p.vy*=-1;
+
+        for(let j=i+1;j<particles.length;j++){
+            let p2 = particles[j];
+            let dist = Math.hypot(p.x-p2.x,p.y-p2.y);
+
+            if(dist < 120){
+                ctx.strokeStyle = "rgba(0,255,255,0.2)";
+                ctx.beginPath();
+                ctx.moveTo(p.x,p.y);
+                ctx.lineTo(p2.x,p2.y);
+                ctx.stroke();
+            }
+        }
+
+        ctx.fillStyle = "#00f0ff";
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,2,0,Math.PI*2);
+        ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+}
+
+draw();
 </script>
 
 </body>
