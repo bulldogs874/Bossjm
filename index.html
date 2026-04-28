@@ -14,11 +14,10 @@ body{
     color:white;
     text-align:center;
     overflow-x:hidden;
-
     background: linear-gradient(135deg,#000428,#004e92,#000428);
 }
 
-/* BACKGROUND ANIMATION */
+/* BACKGROUND */
 #bgCanvas{
     position:fixed;
     top:0;
@@ -121,18 +120,15 @@ input{
     backdrop-filter: blur(15px);
 }
 
-/* 🔥 FIXED LINK BOX */
+/* LINK BOX */
 .link-box{
     margin-top:15px;
     padding:12px;
     border-radius:12px;
     background: rgba(0,0,0,0.25);
     word-wrap: break-word;
-    overflow-wrap: break-word;
-    text-align:left;
 }
 
-/* link text auto break */
 .link-text{
     margin-top:5px;
     font-size:12px;
@@ -150,7 +146,21 @@ input{
     cursor:pointer;
 }
 
-/* POP */
+/* NOTE BOX */
+.note-box{
+    margin:20px auto;
+    padding:15px;
+    width:90%;
+    max-width:320px;
+    border-radius:15px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    text-align:left;
+    font-size:13px;
+    line-height:1.6;
+}
+
+/* ANIMATION */
 @keyframes pop{
     from{transform:scale(0.6); opacity:0;}
     to{transform:scale(1); opacity:1;}
@@ -180,11 +190,35 @@ let userFund = 277.93;
 <div class="service-box" onclick="selectService('Page Followers',22)">👍 Page Followers</div>
 <div class="service-box" onclick="selectService('Profile Followers',22)">👤 Profile Followers</div>
 <div class="service-box" onclick="selectService('Views',4.80)">👁️ Views</div>
-<div class="service-box" onclick="selectService('Reaction',12.78)">❤️ Reaction</div>
+<div class="service-box" onclick="selectService('Reaction',26)">❤️ Reaction</div>
 
 <h3>Total: ₱<span id="total">0</span></h3>
 
 <div class="btn" onclick="submitOrder()">🚀 Submit Order</div>
+
+<!-- PREMIUM NOTE -->
+<div class="note-box">
+<b>📌 Premium Panel Available</b><br><br>
+
+<b>Follower + Views premium</b><br>
+10k Followers + 30k views = ₱220<br>
+20k Followers + 50k views = ₱400<br>
+50k Followers + 100k Views = ₱730<br><br>
+
+<b>Reaction + Views premium</b><br>
+10k Reaction + 50k Views = ₱399<br><br>
+
+<b>Ghost Comments Premium</b><br>
+100k Views + 2k Ghost Comments = ₱390<br><br>
+
+<b>VIEWS</b><br>
+300K views = ₱590<br>
+500K views = ₱870<br>
+1M Views = ₱1690<br><br>
+
+<b>Note:</b> Premium users only<br>
+Available premium series for only ₱430
+</div>
 
 <div id="receiptOverlay">
     <div id="receiptBox"></div>
@@ -243,7 +277,7 @@ function closeReceipt(){
 }
 </script>
 
-<!-- ANIMATED LINES -->
+<!-- BACKGROUND ANIMATION -->
 <script>
 const canvas = document.getElementById("bgCanvas");
 const ctx = canvas.getContext("2d");
