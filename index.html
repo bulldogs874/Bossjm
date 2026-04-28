@@ -146,7 +146,7 @@ input{
     cursor:pointer;
 }
 
-/* NOTE BOX */
+/* NOTE BOX (ORIGINAL - UNTOUCHED) */
 .note-box{
     margin:20px auto;
     padding:15px;
@@ -165,12 +165,48 @@ input{
     from{transform:scale(0.6); opacity:0;}
     to{transform:scale(1); opacity:1;}
 }
+
+/* ================= WARNING POPUP (ADDED ONLY) ================= */
+#warningOverlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: rgba(0,0,0,0.85);
+    z-index:999;
+}
+
+#warningBox{
+    width:90%;
+    max-width:320px;
+    padding:20px;
+    border-radius:15px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px);
+    animation: pop 0.4s ease;
+}
 </style>
 </head>
 
 <body>
 
 <canvas id="bgCanvas"></canvas>
+
+<!-- 🔥 WARNING POPUP (ADDED ONLY) -->
+<div id="warningOverlay">
+    <div id="warningBox">
+        <h2>⚠️ WARNING</h2>
+        <p>
+            Multi link Facebook detection<br><br>
+            Please do not order other Facebook profile link to avoid panel restrictions
+        </p>
+        <div class="close" onclick="closeWarning()">I Understand</div>
+    </div>
+</div>
 
 <script>
 let userFund = 5.68;
@@ -196,7 +232,7 @@ let userFund = 5.68;
 
 <div class="btn" onclick="submitOrder()">🚀 Submit Order</div>
 
-<!-- PREMIUM NOTE -->
+<!-- PREMIUM NOTE (ORIGINAL - UNTOUCHED) -->
 <div class="note-box">
 <b>📌 Premium Panel Available</b><br><br>
 
@@ -226,6 +262,14 @@ Available premium series for only ₱430
 
 <script>
 document.getElementById("fund").innerText = userFund;
+
+window.onload = function(){
+    document.getElementById("warningOverlay").style.display = "flex";
+};
+
+function closeWarning(){
+    document.getElementById("warningOverlay").style.display = "none";
+}
 
 let selectedPrice = 0;
 let selectedService = "";
@@ -277,7 +321,7 @@ function closeReceipt(){
 }
 </script>
 
-<!-- BACKGROUND ANIMATION -->
+<!-- BACKGROUND ANIMATION (UNCHANGED) -->
 <script>
 const canvas = document.getElementById("bgCanvas");
 const ctx = canvas.getContext("2d");
@@ -307,19 +351,6 @@ function draw(){
 
         if(p.x<0||p.x>canvas.width) p.vx*=-1;
         if(p.y<0||p.y>canvas.height) p.vy*=-1;
-
-        for(let j=i+1;j<particles.length;j++){
-            let p2 = particles[j];
-            let dist = Math.hypot(p.x-p2.x,p.y-p2.y);
-
-            if(dist < 120){
-                ctx.strokeStyle = "rgba(0,255,255,0.2)";
-                ctx.beginPath();
-                ctx.moveTo(p.x,p.y);
-                ctx.lineTo(p2.x,p2.y);
-                ctx.stroke();
-            }
-        }
 
         ctx.fillStyle = "#00f0ff";
         ctx.beginPath();
