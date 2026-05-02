@@ -14,7 +14,7 @@ body{
     color:white;
     text-align:center;
     overflow-x:hidden;
-    background: linear-gradient(135deg,#000428,#004e92,#000428);
+    background: linear-gradient(135deg,#1a0033,#6a0dad,#1a0033);
 }
 
 /* BACKGROUND */
@@ -48,7 +48,7 @@ body{
 .logo{
     font-size:42px;
     font-weight:bold;
-    text-shadow:0 0 20px #00f0ff;
+    text-shadow:0 0 20px #b266ff;
 }
 
 /* INPUT */
@@ -84,7 +84,7 @@ input{
 
 .service-box:hover{
     transform:scale(1.05);
-    box-shadow:0 0 20px cyan;
+    box-shadow:0 0 20px #b266ff;
 }
 
 /* BUTTON */
@@ -126,27 +126,24 @@ input{
     padding:12px;
     border-radius:12px;
     background: rgba(0,0,0,0.25);
-    word-wrap: break-word;
 }
 
 .link-text{
-    margin-top:5px;
     font-size:12px;
-    opacity:0.9;
-    word-break: break-all;
+    word-break:break-all;
 }
 
 /* CLOSE */
 .close{
     margin-top:15px;
     padding:10px;
-    background:#00f0ff;
+    background:#b266ff;
     color:black;
     border-radius:10px;
     cursor:pointer;
 }
 
-/* NOTE BOX (ORIGINAL - UNTOUCHED) */
+/* NOTE */
 .note-box{
     margin:20px auto;
     padding:15px;
@@ -156,38 +153,17 @@ input{
     background: rgba(255,255,255,0.08);
     backdrop-filter: blur(12px);
     text-align:left;
-    font-size:13px;
-    line-height:1.6;
 }
 
-/* ANIMATION */
-@keyframes pop{
-    from{transform:scale(0.6); opacity:0;}
-    to{transform:scale(1); opacity:1;}
-}
-
-/* ================= WARNING POPUP (ADDED ONLY) ================= */
-#warningOverlay{
+/* MUSIC BUTTON */
+.music-btn{
     position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background: rgba(0,0,0,0.85);
-    z-index:999;
-}
-
-#warningBox{
-    width:90%;
-    max-width:320px;
-    padding:20px;
-    border-radius:15px;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(15px);
-    animation: pop 0.4s ease;
+    bottom:20px;
+    right:20px;
+    padding:12px;
+    border-radius:50%;
+    background:#b266ff;
+    cursor:pointer;
 }
 </style>
 </head>
@@ -196,17 +172,11 @@ input{
 
 <canvas id="bgCanvas"></canvas>
 
-<!-- 🔥 ANNOUNCEMENT POPUP (ADDED ONLY) -->
-<div id="warningOverlay">
-    <div id="warningBox">
-        <h2> UPGRADE YOUR PANEL </h2></h2>
-        <p>
-            WAIT FOR PROGRESS PRICE UPDATE DUE SERVICES SLOW<br><br>
-            DONT PANIC IF YOUR ORDER NOT DELIVERED IMMEDIATELY BECAUSE OF SERVICE SLOW BUT WE UPDATE IT
-        </p>
-        <div class="close" onclick="closeWarning()">I Understand</div>
-    </div>
-</div>
+<!-- MUSIC -->
+<audio id="bgMusic" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
+<div class="music-btn" onclick="document.getElementById('bgMusic').play()">🎵</div>
 
 <script>
 let userFund =144.60;
@@ -215,113 +185,85 @@ let userFund =144.60;
 <div class="fund">Fund: ₱<span id="fund"></span></div>
 
 <div class="logo-box">
-    <div class="logo">BOSSMJ34</div>
+<div class="logo">BOSSMJ34</div>
 </div>
 
 <div class="box">
-    <input type="text" id="link" placeholder="Facebook Link">
-    <input type="number" id="qty" placeholder="Quantity" oninput="calcTotal()">
+<input type="text" id="link" placeholder="Facebook Link">
+<input type="number" id="qty" placeholder="Quantity" oninput="calcTotal()">
 </div>
 
 <div class="service-box" onclick="selectService('Page Followers',19)">👍 Page Followers</div>
 <div class="service-box" onclick="selectService('Profile Followers',19)">👤 Profile Followers</div>
-<div class="service-box" onclick="selectService('Views',8.80)">👁️ Views</div>
+<div class="service-box" onclick="selectService('Views',8.90)">👁️ Views</div>
 <div class="service-box" onclick="selectService('Reaction',26.78)">❤️ Reaction</div>
 
 <h3>Total: ₱<span id="total">0</span></h3>
 
 <div class="btn" onclick="submitOrder()">🚀 Submit Order</div>
 
-<!-- PREMIUM NOTE (ORIGINAL - UNTOUCHED) -->
-<div class="note-box">
-<b>📌 Premium Panel Available</b><br><br>
-
-<b>Follower + Views premium</b><br>
-10k Followers + 30k views = ₱220<br>
-20k Followers + 50k views = ₱400<br>
-50k Followers + 100k Views = ₱730<br><br>
-
-<b>Reaction + Views premium</b><br>
-10k Reaction + 50k Views = ₱399<br><br>
-
-<b>Ghost Comments Premium</b><br>
-100k Views + 2k Ghost Comments = ₱390<br><br>
-
-<b>VIEWS</b><br>
-300K views = ₱590<br>
-500K views = ₱870<br>
-1M Views = ₱1690<br><br>
-
-<b>Note:</b> Premium users only<br>
-Available premium series for only ₱430
-</div>
-
 <div id="receiptOverlay">
-    <div id="receiptBox"></div>
+<div id="receiptBox"></div>
 </div>
 
 <script>
 document.getElementById("fund").innerText = userFund;
 
-window.onload = function(){
-    document.getElementById("warningOverlay").style.display = "flex";
-};
-
-function closeWarning(){
-    document.getElementById("warningOverlay").style.display = "none";
-}
-
 let selectedPrice = 0;
 let selectedService = "";
 
 function selectService(name, price){
-    selectedService = name;
-    selectedPrice = price;
-    calcTotal();
+selectedService = name;
+selectedPrice = price;
+calcTotal();
 }
 
 function calcTotal(){
-    let qty = document.getElementById("qty").value;
-    let total = (qty / 1000) * selectedPrice;
-    document.getElementById("total").innerText = total.toFixed(2);
+let qty = document.getElementById("qty").value;
+let total = (qty / 1000) * selectedPrice;
+document.getElementById("total").innerText = total.toFixed(2);
 }
 
 function submitOrder(){
-    let link = document.getElementById("link").value;
-    let qty = document.getElementById("qty").value;
-    let total = (qty / 1000) * selectedPrice;
+let link = document.getElementById("link").value;
+let qty = document.getElementById("qty").value;
+let total = (qty / 1000) * selectedPrice;
 
-    if(!selectedService) return alert("Select service!");
-    if(total > userFund) return alert("Insufficient fund!");
+if(!selectedService) return alert("Select service!");
+if(total > userFund) return alert("Insufficient fund!");
 
-    userFund -= total;
-    document.getElementById("fund").innerText = userFund.toFixed(2);
+let beforeFund = userFund;
 
-    let date = new Date().toLocaleString();
+userFund -= total;
+document.getElementById("fund").innerText = userFund.toFixed(2);
 
-    document.getElementById("receiptOverlay").style.display = "flex";
-    document.getElementById("receiptBox").innerHTML = `
-        <h2>🚀 RECEIPT</h2>
-        Date: ${date}<br>
-        Service: ${selectedService}<br>
-        Quantity: ${qty}<br>
-        Total: ₱${total.toFixed(2)}
+let date = new Date().toLocaleString();
 
-        <div class="link-box">
-            🔗 Link:
-            <div class="link-text">${link}</div>
-        </div>
+document.getElementById("receiptOverlay").style.display = "flex";
+document.getElementById("receiptBox").innerHTML = `
+<h2>🚀 RECEIPT</h2>
+Date: ${date}<br>
+Service: ${selectedService}<br>
+Quantity: ${qty}<br><br>
 
-        <div class="close" onclick="closeReceipt()">Close</div>
-    `;
+💰 Current Fund: ₱${beforeFund.toFixed(2)}<br>
+➖ Deducted: ₱${total.toFixed(2)}<br>
+🟢 Remaining: ₱${userFund.toFixed(2)}<br><br>
+
+<div class="link-box">
+🔗 Link:
+<div class="link-text">${link}</div>
+</div>
+
+<div class="close" onclick="closeReceipt()">Close</div>
+`;
 }
 
 function closeReceipt(){
-    document.getElementById("receiptOverlay").style.display = "none";
+document.getElementById("receiptOverlay").style.display = "none";
 }
 </script>
 
-<!-- BACKGROUND ANIMATION (UNCHANGED) -->
 <script>
 const canvas = document.getElementById("bgCanvas");
 const ctx = canvas.getContext("2d");
@@ -332,33 +274,31 @@ canvas.height = window.innerHeight;
 let particles = [];
 
 for(let i=0;i<80;i++){
-    particles.push({
-        x:Math.random()*canvas.width,
-        y:Math.random()*canvas.height,
-        vx:(Math.random()-0.5)*0.5,
-        vy:(Math.random()-0.5)*0.5
-    });
+particles.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+vx:(Math.random()-0.5)*0.5,
+vy:(Math.random()-0.5)*0.5
+});
 }
 
 function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    for(let i=0;i<particles.length;i++){
-        let p = particles[i];
+for(let p of particles){
+p.x += p.vx;
+p.y += p.vy;
 
-        p.x += p.vx;
-        p.y += p.vy;
+if(p.x<0||p.x>canvas.width) p.vx*=-1;
+if(p.y<0||p.y>canvas.height) p.vy*=-1;
 
-        if(p.x<0||p.x>canvas.width) p.vx*=-1;
-        if(p.y<0||p.y>canvas.height) p.vy*=-1;
+ctx.fillStyle = "#b266ff";
+ctx.beginPath();
+ctx.arc(p.x,p.y,2,0,Math.PI*2);
+ctx.fill();
+}
 
-        ctx.fillStyle = "#00f0ff";
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,2,0,Math.PI*2);
-        ctx.fill();
-    }
-
-    requestAnimationFrame(draw);
+requestAnimationFrame(draw);
 }
 
 draw();
