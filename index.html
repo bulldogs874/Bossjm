@@ -87,6 +87,22 @@ input{
     box-shadow:0 0 20px #b266ff;
 }
 
+/* PROMO */
+.promo-box{
+    border:2px solid #ffcc00;
+    box-shadow:0 0 20px rgba(255,204,0,0.5);
+    animation:glow 1.5s infinite alternate;
+}
+
+@keyframes glow{
+    from{
+        box-shadow:0 0 10px rgba(255,204,0,0.4);
+    }
+    to{
+        box-shadow:0 0 25px rgba(255,204,0,1);
+    }
+}
+
 /* BUTTON */
 .btn{
     margin:15px auto;
@@ -178,10 +194,11 @@ input{
 <audio id="bgMusic" loop>
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
+
 <div class="music-btn" onclick="document.getElementById('bgMusic').play()">🎵</div>
 
 <script>
-let userFund =91.62;
+let userFund = 91.62;
 </script>
 
 <div class="fund">Fund: ₱<span id="fund"></span></div>
@@ -195,22 +212,36 @@ let userFund =91.62;
 <input type="number" id="qty" placeholder="Quantity" oninput="calcTotal()">
 </div>
 
+<!-- SERVICES -->
 <div class="service-box" onclick="selectService('Page Followers',19)">👍 Page Followers</div>
+
 <div class="service-box" onclick="selectService('Profile Followers',19)">👤 Profile Followers</div>
+
 <div class="service-box" onclick="selectService('Views',8.90)">👁️ Views</div>
+
 <div class="service-box" onclick="selectService('Reaction',26.78)">❤️ Reaction</div>
-<div class="service-box" onclick="selectService('ghost comments',57.78)">Ghost Comments</div>
-<div class="service-box" onclick="selectService('Post share',39.78)">Post share</div>
-    
+
+<div class="service-box" onclick="selectService('ghost comments',57.78)">💬 Ghost Comments</div>
+
+<div class="service-box" onclick="selectService('Post share',39.78)">📤 Post Share</div>
+
+<!-- PROMO BOX -->
+<div class="service-box promo-box" onclick="selectPromo()">
+🔥 PROMO BOX 🔥<br><br>
+100K Views + 10K Share<br>
+💰 Price: ₱400
+</div>
+
 <h3>Total: ₱<span id="total">0</span></h3>
 
 <div class="btn" onclick="submitOrder()">🚀 Submit Order</div>
 
+<!-- RECEIPT -->
 <div id="receiptOverlay">
 <div id="receiptBox"></div>
 </div>
 
-<!-- ✅ NOTE SECTION (ADDED LANG) -->
+<!-- NOTE -->
 <div class="note-box">
 <b>📢 UPGRADE PANEL AVAILABLE</b><br>
 MAY 2 - MAY 3 ONLY FOR ONLY ACTIVE PANEL RESERVED<br><br>
@@ -249,43 +280,77 @@ document.getElementById("fund").innerText = userFund;
 
 let selectedPrice = 0;
 let selectedService = "";
+let promoMode = false;
 
 function selectService(name, price){
 selectedService = name;
 selectedPrice = price;
+promoMode = false;
+
+document.getElementById("qty").style.display = "block";
+
 calcTotal();
 }
 
+function selectPromo(){
+selectedService = "100K Views + 10K Share Promo";
+selectedPrice = 400;
+promoMode = true;
+
+document.getElementById("qty").style.display = "none";
+
+document.getElementById("total").innerText = "400.00";
+}
+
 function calcTotal(){
+
+if(promoMode){
+document.getElementById("total").innerText = "400.00";
+return;
+}
+
 let qty = document.getElementById("qty").value;
+
 let total = (qty / 1000) * selectedPrice;
+
 document.getElementById("total").innerText = total.toFixed(2);
 }
 
 function submitOrder(){
+
 let link = document.getElementById("link").value;
-let qty = document.getElementById("qty").value;
-let total = (qty / 1000) * selectedPrice;
+
+let qty = promoMode ? "100K Views + 10K Share" : document.getElementById("qty").value;
+
+let total = promoMode ? 400 : (qty / 1000) * selectedPrice;
 
 if(!selectedService) return alert("Select service!");
+
 if(total > userFund) return alert("Insufficient fund!");
 
 let beforeFund = userFund;
 
 userFund -= total;
+
 document.getElementById("fund").innerText = userFund.toFixed(2);
 
 let date = new Date().toLocaleString();
 
 document.getElementById("receiptOverlay").style.display = "flex";
+
 document.getElementById("receiptBox").innerHTML = `
 <h2>🚀 RECEIPT</h2>
-Date: ${date}<br>
+
+Date: ${date}<br><br>
+
 Service: ${selectedService}<br>
+
 Quantity: ${qty}<br><br>
 
 💰 Current Fund: ₱${beforeFund.toFixed(2)}<br>
+
 ➖ Deducted: ₱${total.toFixed(2)}<br>
+
 🟢 Remaining: ₱${userFund.toFixed(2)}<br><br>
 
 <div class="link-box">
@@ -302,8 +367,10 @@ document.getElementById("receiptOverlay").style.display = "none";
 }
 </script>
 
+<!-- BACKGROUND PARTICLES -->
 <script>
 const canvas = document.getElementById("bgCanvas");
+
 const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
@@ -312,18 +379,22 @@ canvas.height = window.innerHeight;
 let particles = [];
 
 for(let i=0;i<80;i++){
+
 particles.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
 vx:(Math.random()-0.5)*0.5,
 vy:(Math.random()-0.5)*0.5
 });
+
 }
 
 function draw(){
+
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
 for(let p of particles){
+
 p.x += p.vx;
 p.y += p.vy;
 
@@ -331,12 +402,17 @@ if(p.x<0||p.x>canvas.width) p.vx*=-1;
 if(p.y<0||p.y>canvas.height) p.vy*=-1;
 
 ctx.fillStyle = "#b266ff";
+
 ctx.beginPath();
+
 ctx.arc(p.x,p.y,2,0,Math.PI*2);
+
 ctx.fill();
+
 }
 
 requestAnimationFrame(draw);
+
 }
 
 draw();
