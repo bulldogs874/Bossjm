@@ -70,6 +70,15 @@ input{
     border-radius:8px;
 }
 
+/* SELECT */
+select{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+}
+
 /* SERVICES */
 .service-box{
     margin:10px auto;
@@ -198,7 +207,7 @@ input{
 <div class="music-btn" onclick="document.getElementById('bgMusic').play()">🎵</div>
 
 <script>
-let userFund = 6.03;
+let userFund = 206.03;
 </script>
 
 <div class="fund">Fund: ₱<span id="fund"></span></div>
@@ -213,17 +222,51 @@ let userFund = 6.03;
 </div>
 
 <!-- SERVICES -->
-<div class="service-box" onclick="selectService('Page Followers',19)">👍 Page Followers</div>
+<div class="service-box" onclick="selectService('Page Followers',19)">
+👍 Page Followers
+</div>
 
-<div class="service-box" onclick="selectService('Profile Followers',19)">👤 Profile Followers</div>
+<div class="service-box" onclick="selectService('Profile Followers',19)">
+👤 Profile Followers
+</div>
 
-<div class="service-box" onclick="selectService('Views',8.90)">👁️ Views</div>
+<div class="service-box" onclick="selectService('Views',8.90)">
+👁️ Views
+</div>
 
-<div class="service-box" onclick="selectService('Reaction',26.78)">❤️ Reaction</div>
+<!-- REACTION SERVICE -->
+<div class="service-box" onclick="selectService('Reaction',26.78)">
+❤️ Reaction
 
-<div class="service-box" onclick="selectService('ghost comments',57.78)">💬 Ghost Comments</div>
+<div style="margin-top:10px;">
 
-<div class="service-box" onclick="selectService('Post share',39.78)">📤 Post Share</div>
+<select id="reactionType">
+
+<option value="😂 Haha">😂 Haha</option>
+
+<option value="😡 Angry">😡 Angry</option>
+
+<option value="😢 Sad">😢 Sad</option>
+
+<option value="😘 Care">😘 Care</option>
+
+<option value="👍 Like">👍 Like</option>
+
+<option value="❤️ Love">❤️ Love</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="service-box" onclick="selectService('ghost comments',57.78)">
+💬 Ghost Comments
+</div>
+
+<div class="service-box" onclick="selectService('Post share',39.78)">
+📤 Post Share
+</div>
 
 <!-- PROMO BOX -->
 <div class="service-box promo-box" onclick="selectPromo()">
@@ -243,6 +286,7 @@ let userFund = 6.03;
 
 <!-- NOTE -->
 <div class="note-box">
+
 <b>📢 UPGRADE PANEL AVAILABLE</b><br>
 MAY 2 - MAY 3 ONLY FOR ONLY ACTIVE PANEL RESERVED<br><br>
 
@@ -273,9 +317,11 @@ THANK YOU FOR USING CHECK UPDATE BELOW<br><br>
 
 <b>UPGRADE TO PREMIUM PRICE</b><br>
 ₱500 PESOS ONLY
+
 </div>
 
 <script>
+
 document.getElementById("fund").innerText = userFund;
 
 let selectedPrice = 0;
@@ -283,6 +329,7 @@ let selectedService = "";
 let promoMode = false;
 
 function selectService(name, price){
+
 selectedService = name;
 selectedPrice = price;
 promoMode = false;
@@ -290,9 +337,11 @@ promoMode = false;
 document.getElementById("qty").style.display = "block";
 
 calcTotal();
+
 }
 
 function selectPromo(){
+
 selectedService = "100K Views + 10K Share Promo";
 selectedPrice = 400;
 promoMode = true;
@@ -300,13 +349,16 @@ promoMode = true;
 document.getElementById("qty").style.display = "none";
 
 document.getElementById("total").innerText = "400.00";
+
 }
 
 function calcTotal(){
 
 if(promoMode){
+
 document.getElementById("total").innerText = "400.00";
 return;
+
 }
 
 let qty = document.getElementById("qty").value;
@@ -314,6 +366,7 @@ let qty = document.getElementById("qty").value;
 let total = (qty / 1000) * selectedPrice;
 
 document.getElementById("total").innerText = total.toFixed(2);
+
 }
 
 function submitOrder(){
@@ -336,14 +389,25 @@ document.getElementById("fund").innerText = userFund.toFixed(2);
 
 let date = new Date().toLocaleString();
 
+let reactionSelected = "";
+
+if(selectedService === "Reaction"){
+
+reactionSelected = document.getElementById("reactionType").value;
+
+}
+
 document.getElementById("receiptOverlay").style.display = "flex";
 
 document.getElementById("receiptBox").innerHTML = `
+
 <h2>🚀 RECEIPT</h2>
 
 Date: ${date}<br><br>
 
 Service: ${selectedService}<br>
+
+${selectedService === "Reaction" ? `Reaction Type: ${reactionSelected}<br>` : ""}
 
 Quantity: ${qty}<br><br>
 
@@ -354,21 +418,30 @@ Quantity: ${qty}<br><br>
 🟢 Remaining: ₱${userFund.toFixed(2)}<br><br>
 
 <div class="link-box">
+
 🔗 Link:
+
 <div class="link-text">${link}</div>
+
 </div>
 
 <div class="close" onclick="closeReceipt()">Close</div>
+
 `;
+
 }
 
 function closeReceipt(){
+
 document.getElementById("receiptOverlay").style.display = "none";
+
 }
+
 </script>
 
 <!-- BACKGROUND PARTICLES -->
 <script>
+
 const canvas = document.getElementById("bgCanvas");
 
 const ctx = canvas.getContext("2d");
@@ -381,10 +454,12 @@ let particles = [];
 for(let i=0;i<80;i++){
 
 particles.push({
+
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
 vx:(Math.random()-0.5)*0.5,
 vy:(Math.random()-0.5)*0.5
+
 });
 
 }
@@ -416,6 +491,7 @@ requestAnimationFrame(draw);
 }
 
 draw();
+
 </script>
 
 </body>
