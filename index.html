@@ -219,6 +219,8 @@ let userFund = 114.42;
 <div class="box">
 <input type="text" id="link" placeholder="Facebook Link">
 <input type="number" id="qty" placeholder="Quantity" oninput="calcTotal()">
+<div style="margin-top:10px; font-size:14px;">Total: ₱<span id="total">0.00</span></div>
+<div class="btn" style="background:#b266ff; color:black; font-weight:bold; margin-top:10px;" onclick="submitOrder()">SUBMIT ORDER</div>
 </div>
 
 <!-- SERVICES -->
@@ -239,23 +241,14 @@ let userFund = 114.42;
 ❤️ Reaction
 
 <div style="margin-top:10px;">
-
 <select id="reactionType">
-
 <option value="😂 Haha">😂 Haha</option>
-
 <option value="😡 Angry">😡 Angry</option>
-
 <option value="😢 Sad">😢 Sad</option>
-
 <option value="😘 Care">😘 Care</option>
-
 <option value="👍 Like">👍 Like</option>
-
 <option value="❤️ Love">❤️ Love</option>
-
 </select>
-
 </div>
 
 </div>
@@ -268,57 +261,35 @@ let userFund = 114.42;
 📤 Post Share
 </div>
 
-<!-- PROMO BOX -->
-<div class="service-box promo-box" onclick="selectPromo()">
-🔥 PROMO BOX 🔥<br><br>
-100K Views <br>
-💰 Price: ₱320
+<!-- NEW PROMO SERVICES -->
+<h3 style="margin-top:25px; color:#ffcc00; text-shadow:0 0 10px #ffcc00;">🔥 SPECIAL PROMOS 🔥</h3>
+
+<div class="service-box promo-box" onclick="selectPromo('5K REACTION ❤️ + 10K VIEWS 👁️ (2 SLOT)', 170)">
+<strong>5K REACTION ❤️ + 10K VIEWS 👁️</strong><br>
+<span style="color:#ffcc00; font-weight:bold;">₱ 170</span> <span style="font-size:11px; opacity:0.7;">(2 SLOT)</span>
 </div>
 
-<h3>Total: ₱<span id="total">0</span></h3>
+<div class="service-box promo-box" onclick="selectPromo('5K REACTION + FREE 5K VIEWS (2 SLOT)', 120)">
+<strong>5K REACTION + FREE 5K VIEWS</strong><br>
+<span style="color:#ffcc00; font-weight:bold;">₱ 120</span> <span style="font-size:11px; opacity:0.7;">(2 SLOT)</span>
+</div>
 
-<div class="btn" onclick="submitOrder()">🚀 Submit Order</div>
+<div class="service-box promo-box" onclick="selectPromo('10K VIEWS + FREE 10K VIEWS (2 SLOT)', 155)">
+<strong>10K VIEWS + FREE 10K VIEWS</strong><br>
+<span style="color:#ffcc00; font-weight:bold;">₱ 155</span> <span style="font-size:11px; opacity:0.7;">(2 SLOT)</span>
+</div>
 
-<!-- RECEIPT -->
+<div class="service-box promo-box" onclick="selectPromo('5K REACTION + FREE 5K REACTION (2 SLOT)', 160)">
+<strong>5K REACTION + FREE 5K REACTION</strong><br>
+<span style="color:#ffcc00; font-weight:bold;">₱ 160</span> <span style="font-size:11px; opacity:0.7;">(2 SLOT)</span>
+</div>
+
+
+<!-- RECEIPT OVERLAY -->
 <div id="receiptOverlay">
 <div id="receiptBox"></div>
 </div>
 
-<!-- NOTE -->
-<div class="note-box">
-
-<b>📢 UPGRADE PANEL AVAILABLE</b><br>
-MAY 2 - MAY 3 ONLY FOR ONLY ACTIVE PANEL RESERVED<br><br>
-
-- YOU ARE ONE OF THE LUCKIEST PANEL USER IF YOU SEE THIS UPGRADE<br><br>
-
-THANK YOU FOR USING CHECK UPDATE BELOW<br><br>
-
-<b>📢 Newly added services</b><br><br>
-
-📥Reaction = ₱19.99<br>
-🤣 haha | 😡 angry | 😚 care | 😱 wow | 😭 sad | 👍 like<br><br>
-
-📥Page / Profile Followers = ₱18.89<br><br>
-
-📥STAR sender ⭐<br>
-100 star = ₱87<br><br>
-
-🟢 <b>UPGRADE</b><br>
-- NO NEED TO SEND RECEIPT AUTOMATIC PROVIDER<br>
-- LESS HASSLE<br>
-- MULTIPLE LINK DEVICES<br><br>
-
-<b>TERMS AND CONDITIONS</b><br>
-* SOMETIMES PROCESS MAY TAKE TIME DUE SERVICES INSTABILITY BUT WE AUTOMATICALLY PROGRESS<br>
-* CAN ADD FUND ANYTIME<br>
-* NO MORE LINK OR SCREEN NEED TO SEND<br>
-* MAXIMIZE ALL DESIGN<br><br>
-
-<b>UPGRADE TO PREMIUM PRICE</b><br>
-₱500 PESOS ONLY
-
-</div>
 
 <script>
 
@@ -327,6 +298,7 @@ document.getElementById("fund").innerText = userFund;
 let selectedPrice = 0;
 let selectedService = "";
 let promoMode = false;
+let fixedPromoPrice = 0;
 
 function selectService(name, price){
 
@@ -340,15 +312,15 @@ calcTotal();
 
 }
 
-function selectPromo(){
+function selectPromo(promoName, price){
 
-selectedService = "100K Views + 10K Share Promo";
-selectedPrice = 400;
+selectedService = promoName;
+fixedPromoPrice = price;
 promoMode = true;
 
 document.getElementById("qty").style.display = "none";
 
-document.getElementById("total").innerText = "400.00";
+document.getElementById("total").innerText = price.toFixed(2);
 
 }
 
@@ -356,7 +328,7 @@ function calcTotal(){
 
 if(promoMode){
 
-document.getElementById("total").innerText = "400.00";
+document.getElementById("total").innerText = fixedPromoPrice.toFixed(2);
 return;
 
 }
@@ -373,9 +345,11 @@ function submitOrder(){
 
 let link = document.getElementById("link").value;
 
-let qty = promoMode ? "100K Views + 10K Share" : document.getElementById("qty").value;
+if(!link) return alert("Please enter Facebook Link!");
 
-let total = promoMode ? 400 : (qty / 1000) * selectedPrice;
+let qty = promoMode ? "Promo Package Included" : document.getElementById("qty").value;
+
+let total = promoMode ? fixedPromoPrice : (qty / 1000) * selectedPrice;
 
 if(!selectedService) return alert("Select service!");
 
